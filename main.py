@@ -33,7 +33,7 @@ def questiongen():
 
 
 @app.route('/dialogic/check', methods=['POST'])
-def questiongen():
+def answercheck():
     dq = DialogicPrompter()
     data = request.get_json()
     policy_url = data.get('policy_url')

@@ -111,3 +111,23 @@ def try_parse_json_answer(json_string):
         return json.loads(json_string)
     except:
         return {'Answer' : "Something went wrong", 'Confidence' : 0}
+
+
+
+def try_parse_json_question(json_string):
+    try:
+        return json.loads(json_string)
+    except:
+        return {'Question' : "Something went wrong", 'Confidence' : 0}
+
+
+def try_parse_json_answercheck(json_string):
+    try:
+        return json.loads(json_string)
+    except:
+        return {
+                'Relevant' : False,
+                'Correct' : False,
+                'Explanation' : "Something went wrong",
+                'Confidence' : 0
+            }
