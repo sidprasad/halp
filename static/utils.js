@@ -15,3 +15,10 @@ function makePostRequest(url, data) {
     }
 }
 
+function getConfidenceColor(confidence) {
+    if (confidence < 0.19) return 'red';
+    if (confidence < 0.5) return 'orange';
+    if (confidence < 0.81) return 'blue';
+    
+    return 'green'
+}

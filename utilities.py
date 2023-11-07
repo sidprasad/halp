@@ -77,23 +77,20 @@ def summarizer(text):
 
         
 def get_policy_from_web(url):
+    text_with_html = get_policy_from_web(url)
+    plaintext_policy = html2text.html2text(text_with_html)
+
+    return plaintext_policy
+
+    
+def get_policy_from_web_html(url):
     response = requests.get(url)
 
     # Check if the request was successful
     if response.status_code == 200:
         # Parse the HTML content of the page using BeautifulSoup
         soup = BeautifulSoup(response.text, 'html.parser')
-        text_with_html = soup.get_text()
-        plaintext_policy = html2text.html2text(text_with_html)
-
-        c = 0
-        ## Hack bc of OpenAI Limits
-        while rough_num_words(plaintext_policy) > 3000 or c > 2:
-            #print("SUMMARIZE!")
-            c += 1
-            plaintext_policy = summarizer(plaintext_policy)
-
-        return plaintext_policy
+        return soup.get_text()
     else:
         print("Failed to retrieve the webpage. Status code:", response.status_code)
         return ""

@@ -42,8 +42,13 @@
                 
                 responseJSON = makePostRequest('/answer', payload);
 
+                responseConf = responseJSON['Confidence'];
+                var c = getConfidenceColor(responseConf);
 
                 var resp = document.createElement('li');
+
+                resp.style.color = c;
+
                 resp.textContent = responseJSON['Answer'];
                 resp.classList.add('robot-bullet');
 
@@ -61,7 +66,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <iframe src="https://www.gradescope.com/privacy" width="100%" height="500"></iframe>
+                <div class="container">
+
+                    {{ policy_html}}
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="container">
