@@ -22,6 +22,9 @@ class DialogicPrompter:
     def check_answer(self, q, a, pp):
         system_prompt = self.get_system_prompt(policy_url=pp)
         user_prompt = self.get_user_prompt(question = q, answer = a)
+
+
+        ## TODO: THis needs to be fixed :)
         return gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
 
     # Will abstract out to various connectors

@@ -4,6 +4,7 @@ import nltk
 import html2text
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize, sent_tokenize 
+import json
 
 
 nltk.download('punkt')
@@ -77,8 +78,16 @@ def summarizer(text):
 
         
 def get_policy_from_web(url):
-    text_with_html = get_policy_from_web(url)
-    plaintext_policy = html2text.html2text(text_with_html)
+    text_with_html = get_policy_from_web_html(url)
+    soup = BeautifulSoup(text_with_html, 'html.parser')
+    plaintext_policy = soup.get_text()
+
+
+    # This is a hack I need to figure out!!
+    c = 0
+    while rough_num_words(plaintext_policy) > 3000 and c < 3:
+        c += 1
+        plaintext_policy = summarizer(plaintext_policy)
 
     return plaintext_policy
 
@@ -88,9 +97,17 @@ def get_policy_from_web_html(url):
 
     # Check if the request was successful
     if response.status_code == 200:
+        return response.text
         # Parse the HTML content of the page using BeautifulSoup
-        soup = BeautifulSoup(response.text, 'html.parser')
-        return soup.get_text()
+
     else:
         print("Failed to retrieve the webpage. Status code:", response.status_code)
         return ""
+    
+
+
+def try_parse_json_answer(json_string):
+    try:
+        return json.loads(json_string)
+    except:
+        return {'Answer' : "Something went wrong", 'Confidence' : 0}

@@ -39,69 +39,68 @@
                     'question' : message,
                     'policy_url' : "https://www.gradescope.com/privacy" //'{{ policy }}'
                 }
-                
-                responseJSON = makePostRequest('/answer', payload);
-
-                responseConf = responseJSON['Confidence'];
-                var c = getConfidenceColor(responseConf);
-
                 var resp = document.createElement('li');
-
-                resp.style.color = c;
-
-                resp.textContent = responseJSON['Answer'];
+                resp.textContent = "...thinking...";
                 resp.classList.add('robot-bullet');
-
-                // And output
                 chat.appendChild(resp);
+
+                makePostRequest('/answer', payload)
+                    .then(responseJSON => 
+                    {
+                        responseConf = responseJSON['Confidence'];
+                        var c = getConfidenceColor(responseConf);
+                        resp.style.color = c;
+                        resp.textContent = responseJSON['Answer'];
+                    });
             }
         }
     </script>
 
 </head>
 <body>
-    <h1>Policy Explorer</h1>
+    <div class="main">
 
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="container">
-
-                    {{ policy_html}}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <span class="glyphicon glyphicon-comment"></span> Chat
-                                </div>
-                                <div class="panel-body">
-                                    <ul class="chat">
-                                        <!-- Messages will go here -->
-                                    </ul>
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="input-group">
-                                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-warning btn-sm" id="btn-chat" onclick="sendMessage()">
-                                                Send
-                                            </button>
-                                        </span>
+        <div class="container">
+            <h2>Policy Explorer</h2>
+        </div>
+        <div class="container fixed-top">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Ask a Question
+            </button>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <span class="glyphicon glyphicon-comment"></span> Chat
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="chat">
+                                            <!-- Messages will go here -->
+                                        </ul>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="input-group">
+                                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-warning btn-sm" id="btn-chat" onclick="sendMessage()">
+                                                    Send
+                                                </button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>            
+                </div>
             </div>
         </div>
     </div>
-
+        <div class="container-fluid" id="policy_pane">
+            {{ policy_html | safe }}
+        </div>
+    </div>
 
 
 

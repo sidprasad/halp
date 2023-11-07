@@ -22,8 +22,25 @@ def assistantanswer():
     ans = ast.gen_answer(question=question, privacy_policy = policy_url)
     return ans
 
+@app.route('/dialogic/gen', methods=['POST'])
+def questiongen():
+    dq = DialogicPrompter()
+
+    data = request.get_json()
+    policy_url = data.get('policy_url')
+    q = dq.gen_question(policy_url = policy_url)    
+    return q
 
 
+@app.route('/dialogic/check', methods=['POST'])
+def questiongen():
+    dq = DialogicPrompter()
+    data = request.get_json()
+    policy_url = data.get('policy_url')
+    question = data.get('question')
+    answer = data.get('answer')
+    v = dq.check_answer(policy_url = policy_url, question = question, answer = answer)    
+    return v
 
 if __name__ == '__main__':
     app.run(debug=True)

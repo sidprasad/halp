@@ -1,6 +1,6 @@
 import gptinterface
 from utilities import *
-import json
+
 
 
 class Assistant:
@@ -15,6 +15,8 @@ class Assistant:
 
 
         '''.format(p = plaintext_policy)
+
+
         return PLAINTEXT_SYSTEM_PROMPT
 
 
@@ -36,4 +38,4 @@ class Assistant:
         raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
 
         ## Make this robust
-        return json.loads(raw_str)
+        return try_parse_json_answer(raw_str)
