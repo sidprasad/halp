@@ -38,7 +38,7 @@ class QuestionGenerator:
             Format your response in JSON as follows:
             {{
                 "Question" : The text of [QUESTION],
-                "Authentic" : False if the answer is can be determined from [PRIVACY POLICY], True otherwise,
+                "Authentic" : false if the answer is can be determined from [PRIVACY POLICY], true otherwise,
                 "Answer" : A correct answer to [QUESTION],
             }}
 
