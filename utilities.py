@@ -109,7 +109,9 @@ def get_policy_from_web_html(url):
 def try_parse_json_answer(json_string):
     try:
         return json.loads(json_string)
-    except:
+    except Exception as e:
+        print(json_string)
+        print(e)
         return {'Answer' : "Something went wrong", 'Confidence' : 0}
 
 

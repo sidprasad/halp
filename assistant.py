@@ -27,8 +27,8 @@ class Assistant:
 
             Answer this question using only information from [PRIVACY POLICY]:
             {{
-                'Answer' : [A short answer to the question],
-                'Confidence' : [Your confidence in this decision on a scale of 0 to 1, with 0 being not confident and 1 being completely certain.]
+                "Answer" : [A short answer to the question],
+                "Confidence" : [Your confidence in this decision on a scale of 0 to 1, with 0 being not confident and 1 being completely certain.]
             }}
         '''.format(q = question)
     

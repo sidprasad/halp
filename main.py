@@ -6,9 +6,10 @@ from utilities import get_policy_from_web_html
 app = Flask(__name__)
 
 @app.route('/')
-def home():
+def exploremode():
     policy_html = get_policy_from_web_html("https://www.gradescope.com/privacy")
-    return render_template('index.html', policy_html = policy_html)
+    return render_template('explorer.html', policy_html = policy_html)
+
 
 
 @app.route('/answer', methods=['POST'])

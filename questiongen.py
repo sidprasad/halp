@@ -29,17 +29,17 @@ class QuestionGenerator:
         plaintext_policy = get_policy_from_web(policy_url)
 
     
-        PLAINTEXT_SYSTEM_PROMPT = ''' You are a tutor helping determine whether users correctly understand the privacy policy below:
+        PLAINTEXT_SYSTEM_PROMPT = ''' You are a tutor helping users correctly understand the privacy policy below:
             [PRIVACY POLICY]
             {p}
 
-            For this policy, the student was asked a [QUESTION] and responded with an [ANSWER]. 
-            Determine whether [ANSWER] answers [QUESTION], whether it was correct or incorrect.
+            Employing the Socratic method, ask a student a [QUESTION] about the [PRIVACY POLICY].
+            
+            Format your response in JSON as follows:
             {{
-                'Relevant' : [True if [ANSWER] answers [QUESTION], False otherwise],
-                'Correct' : [True if the answer is correct, False if incorrect],
-                'Explanation' : [A 2 sentence explanation of why the answer was correct or incorrect],
-                'Confidence' : [Your confidence in this decision on a scale of 0 to 1, with 0 being not confident and 1 being completely certain.]
+                "Question" : The text of [QUESTION],
+                "Authentic" : False if the answer is can be determined from [PRIVACY POLICY], True otherwise,
+                "Answer" : A correct answer to [QUESTION],
             }}
 
         '''.format(p = plaintext_policy)
@@ -47,6 +47,5 @@ class QuestionGenerator:
 
         
     def get_user_prompt(self):
-        return ''' You are a tutor helping determine whether users correctly understand the [PRIVACY POLICY]. Employing the Socratic method,
-        ask a student a question about the [PRIVACY POLICY].
-        '''
+        # This will be improved
+        return ''' Employing the Socratic method, ask a student a [QUESTION] about the [PRIVACY POLICY].   '''

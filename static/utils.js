@@ -1,6 +1,6 @@
 
 
-async function makePostRequest(url = '', data = {}) {
+async function makePostRequest(url, data) {
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -20,4 +20,10 @@ function getConfidenceColor(confidence) {
     if (confidence < 0.81) return 'blue';
     
     return 'green'
+}
+
+
+async function getQuestion(policy_url) {
+   
+    return await makePostRequest('/dialogic/gen', {'policy_url': policy_url})
 }
