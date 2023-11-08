@@ -35,3 +35,8 @@ This explorer exposes two main flows:
 
 - Users can directly ask questions to the Assistant
 - Assitant uses GPT to answer.
+
+
+## Future Plans
+
+Would like to integrate with information flow analysis.
