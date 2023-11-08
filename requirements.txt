@@ -1,0 +1,8 @@
+# This file lists all the Python packages required by the Flask app to run.
+# It includes the Flask package itself, as well as other dependencies like Flask-WTF and Flask-Login.
+
+flask
+openai
+nltk
+requests
+bs4
