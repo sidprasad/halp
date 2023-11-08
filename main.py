@@ -5,10 +5,22 @@ from utilities import get_policy_from_web_html
 
 app = Flask(__name__)
 
-@app.route('/')
+
+@app.route('/', methods=['GET','POST'])
+def home():
+
+    if request.method == 'POST':
+        policy_url = request.form.get('policy_url')
+        policy_html = get_policy_from_web_html(policy_url)
+        return render_template('explorer.html', policy_html = policy_html, policy_url = policy_url)
+
+    return render_template('index.html')
+        
+
+@app.route('/explorer')
 def exploremode():
     policy_html = get_policy_from_web_html("https://www.gradescope.com/privacy")
-    return render_template('explorer.html', policy_html = policy_html)
+    return render_template('explorer.html', policy_html = policy_html, policy_url = "https://www.gradescope.com/privacy")
 
 
 
