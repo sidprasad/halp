@@ -1,4 +1,4 @@
-# Privacy Explorer
+# Human Answers (help) Learn (about) Privacy
 
 This repository describes a simple system that helps explore privacy policies.
 
