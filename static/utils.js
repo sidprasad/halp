@@ -24,6 +24,5 @@ function getConfidenceColor(confidence) {
 
 
 async function getQuestion(policy_url) {
-   
-    return await makePostRequest('/dialogic/gen', {'policy_url': policy_url})
+   return await makePostRequest('/dialogic/gen', {'policy_url': policy_url})
 }

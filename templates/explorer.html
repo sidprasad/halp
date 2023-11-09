@@ -90,17 +90,32 @@
         }
 
         function populateQuestion(){
-
             var dq = document.getElementById('dq');
-            dq.textContent = "Generating question";
 
-            getQuestion(policy_url ="{{ policy_url }}" )
-            .then(responseJSON => 
-            {
-                var q = responseJSON['Question'];
-                dq.textContent = q;
-            });
+            var collapseExample2 = document.getElementById('collapseExample2');
+
+            var element = document.getElementById('collapseExample2');
+            var isExpanded = element.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+                dq.textContent = "..."
+                document.getElementById('checkedAnswer').textContent = "";
+            } 
+            else {
+
+                // The element is collapsed and will expand
+                dq.textContent = "Generating question";
+                            // Get question is NOT being called, or we are not waiting enough?
+                getQuestion(policy_url ="{{ policy_url }}" )
+                .then(responseJSON => 
+                {
+                    var q = responseJSON['Question'];
+                    dq.textContent = q;
+                });
+            }
         }
+
+
+
 
 
     </script>
@@ -147,21 +162,27 @@
                 </div>
             </div>
             <div class = "container" id="tutordiv">
-                <button  onclick="populateQuestion()"   class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample" >
-                    Socrates HALP
+                <button  class="btn btn-primary"  onclick="populateQuestion()"    type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample" >
+                    Ask ME a Question
                 </button>
 
                 <div class="collapse" id="collapseExample2">
                     <div class="container">
                         <div class="card card-body">
-                            <p id="dq"> Generating question </p>
-                            <input id="btn-input-ans" type="text" class="form-control input-sm" placeholder="Type your answer here..." />
-                            <span class="input-group-btn">
-                                <button class="btn btn-warning btn-sm" id="btn-ans" onclick="sendAnswer()">
-                                    Submit
-                                </button>
-                            </span>
-                            <p id="checkedAnswer"> </p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="panel panel-primary">
+                                        <p id="dq">... </p>
+                                        <input id="btn-input-ans" type="text" class="form-control input-sm" placeholder="Type your answer here..." />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-warning btn-sm" id="btn-ans" onclick="sendAnswer()">
+                                                Submit
+                                            </button>
+                                        </span>
+                                        <p id="checkedAnswer"> </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ def home():
 @app.route('/explorer')
 def exploremode():
     policy_html = get_policy_from_web_html("https://www.gradescope.com/privacy")
-    return render_template('explorer.html', policy_html = policy_html, policy_url = "https://www.gradescope.com/privacy")
+    return render_template('explorer.html', policy_html = policy_html, policy_ulorl = "https://www.gradescope.com/privacy")
 
 
 
