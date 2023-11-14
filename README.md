@@ -1,11 +1,6 @@
 # Human Answers (help) Learn (about) Privacy
 
 HALP is a system that helps Computer Science students understand privacy policies.
-
-
-![Logo](static/halp-logo.png =50x "HALP logo")
-
-
 This takes the form of two AI assistants:
 
 ### HALp
