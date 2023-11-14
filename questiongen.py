@@ -81,7 +81,7 @@ class QuestionGenerator:
         return try_parse_json_question(raw_str)
 
         
-    def get_relation_string(data_kind, data_processor):
+    def get_relation_string(self, data_kind, data_processor):
         return "[QUESTION] should focus on {dk} and how/if it is shared with {dp}.".format(dp = data_processor, dk = data_kind)
 
 
@@ -122,7 +122,3 @@ class QuestionGenerator:
         # Generate prompt
         p = "Employing the Socratic method, ask a student a [QUESTION] about the [PRIVACY POLICY]" + rel_prompt + level_prompt
         return p
-
-
-    def choose_topic(self):
-        return ("", 1) # (topic, level)

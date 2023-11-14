@@ -74,12 +74,12 @@
                 makePostRequest('/dialogic/check', payload)
                     .then(responseJSON => 
                     {
-                        if (responseJSON['Relevant'] ) {
-                            resp.textContent = "We could not determine if this was a relevant answer to the question.";
+                        // if (notresponseJSON['Relevant'] ) {
+                        //     resp.textContent = "We could not determine if this was a relevant answer to the question.";
 
-                        } else {
+                        // } else {
                             resp.textContent = responseJSON["Correct"]  ? "We believe this is correct. " : "This answer may not be correct. " ;
-                        }
+                        //}
 
                         responseConf = responseJSON['Confidence'];
                         var c = getConfidenceColor(responseConf);
