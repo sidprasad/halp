@@ -69,7 +69,7 @@
 
                 }
                 var resp = document.getElementById('checkedAnswer');
-                resp.textContent = "...thinking...";
+                resp.textContent = "...responding...";
 
                 makePostRequest('/dialogic/check', payload)
                     .then(responseJSON => 
@@ -78,7 +78,7 @@
                         //     resp.textContent = "We could not determine if this was a relevant answer to the question.";
 
                         // } else {
-                            resp.textContent = responseJSON["Correct"]  ? "We believe this is correct. " : "This answer may not be correct. " ;
+                            resp.textContent = responseJSON["Correct"]  ? "Good job! " : "This answer may not be correct. " ;
                         //}
 
                         responseConf = responseJSON['Confidence'];

@@ -1,10 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import nltk
-import html2text
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize, sent_tokenize 
 import json
+from enum import Enum
 
 
 nltk.download('punkt')
@@ -137,3 +137,29 @@ def try_parse_json_answercheck(json_string):
                 'Explanation' : "Something went wrong",
                 'Confidence' : 0
             }
+    
+
+class DataKind(Enum):
+    ASSIGNMENT_SUBMISSIONS = 1
+    PERSONAL_INFORMATION = 2
+    INTERACTION_DATA = 3
+    OTHER = 4
+    
+    def __str__(self):
+        if self == DataKind.OTHER:
+            return "the collection, ownership or sharing of data"
+        return self.name.title().replace("_", " ")
+    
+
+
+class DataProcessor(Enum):
+    OTHER_STUDENTS = 1
+    COURSE_INSTRUCTOR = 2
+    COURSE_TAS = 3
+    EDUCATION_RESEARCHERS = 4
+    THIRD_PARTY_CORPORATIONS = 5
+
+    def __str__(self):
+        if self == DataProcessor.THIRD_PARTY_CORPORATIONS:
+            return "corporations (including the producer of this software)"
+        return self.name.title().replace("_", " ")

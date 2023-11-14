@@ -1,8 +1,7 @@
 import gptinterface
 from utilities import *
-from enum import Enum
-from enum import Enum
 import random
+
 
 
 ### TODO:
@@ -11,30 +10,6 @@ import random
 
 
 
-class DataKind(Enum):
-    ASSIGNMENT_SUBMISSIONS = 1
-    PERSONAL_INFORMATION = 2
-    INTERACTION_DATA = 3
-    OTHER = 4
-    
-    def __str__(self):
-        if self == DataKind.OTHER:
-            return "the collection of data"
-        return self.name.title().replace("_", " ")
-    
-
-
-class DataProcessor(Enum):
-    OTHER_STUDENTS = 1
-    COURSE_INSTRUCTOR = 2
-    COURSE_TAS = 3
-    EDUCATION_RESEARCHERS = 4
-    THIRD_PARTY_CORPORATIONS = 5
-
-    def __str__(self):
-        if self == DataProcessor.THIRD_PARTY_CORPORATIONS:
-            return "corporations (including the producer of this software)"
-        return self.name.title().replace("_", " ")
 
 
 def get_random_topic():
@@ -67,17 +42,21 @@ def get_costas_level_prompt(level):
 
 
 def get_level(data_kind, data_processor):
+
+    # PErhaps we should bias questions --> TOWARDS <-- these levels for these question types.
     ## Level 1 if its an area where students do not know what is going on.
     ## Level 2 if its an area where student opinion is mixed. These questions require students to expand what they already know by using facts, details, or clues.
     ## Level 3 if it is an area where students have a good understanding of the topic. These questions require students to reflect on their thinking and be able to respond with a
     # personal opinion that is supported by facts. The student makes a value judgment or wonders about something. There is no right or wrong answer.
-    return 1
+
+    return random.randint(1, 3)
 
 class QuestionGenerator:
     def gen_question(self, policy_url):
         system_prompt = self.get_system_prompt(policy_url=policy_url)
         user_prompt = self.get_user_prompt()
         raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
+        ## Re-engineer to return question level, and potential answer.
         return try_parse_json_question(raw_str)
 
         
@@ -107,14 +86,10 @@ class QuestionGenerator:
         '''.format(p = plaintext_policy)
         return PLAINTEXT_SYSTEM_PROMPT
 
-        
+    # TODO: Improve        
     def get_user_prompt(self):
-        # This will be improved
 
-        # Choose topic
         (data_kind, data_processor) = get_random_topic()
-        # Choose associated level
-
         level = get_level(data_kind, data_processor)
         rel_prompt = self.get_relation_string(data_kind, data_processor)
         level_prompt = get_costas_level_prompt(level)
