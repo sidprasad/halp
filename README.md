@@ -1,10 +1,12 @@
 # Human Answers (help) Learn (about) Privacy
 
-![Logo](static/halp-logo.png "HALP logo")
+HALP is a system that helps Computer Science students understand privacy policies.
 
-This repository contains a simple system that helps Computer Science students understand privacy policies.
-This takes the form of two AI assistants
 
+![Logo](static/halp-logo.png =50x "HALP logo")
+
+
+This takes the form of two AI assistants:
 
 ### HALp
 
