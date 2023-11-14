@@ -1,6 +1,6 @@
 # Human Answers (help) Learn (about) Privacy
 
-![Logo](static\halp-logo.png "HALP logo")
+![Logo](static/halp-logo.png "HALP logo")
 
 This repository contains a simple system that helps Computer Science students understand privacy policies.
 This takes the form of two AI assistants
