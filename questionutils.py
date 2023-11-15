@@ -1,6 +1,6 @@
-from utilities import DataKind, DataProcessor
-import random
 
+import random
+from enum import Enum
 
 
 class DataKind(Enum):

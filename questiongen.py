@@ -20,7 +20,7 @@ class QuestionGenerator:
         
         ## Re-engineer to return question level, and potential answer.
         q = try_parse_json_question(raw_str)
-        q['level'] = user_prompt_data['level']
+        q['Level'] = user_prompt_data['level']
         return q
         
     def get_relation_string(self, data_kind, data_processor):
