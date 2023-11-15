@@ -45,8 +45,8 @@ pip install -r requirements.txt
     ```
   1. Now run `python main.py` or launch as a Flask application.
 
-## Future Work / TODO
+## Future Work
 
 [] Would like to integrate with information flow analysis.
-[] provide question level alongside question, so HALP doesn't check Level 3 questions.
-[] Algorithm to determine question level -> This should come from the results of the survey
+[] Evaluation Criteria?
+
