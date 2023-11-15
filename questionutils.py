@@ -80,7 +80,7 @@ MIXED_UNDERSTANDING = 2 ## Level 2 if its an area where student understanding is
 GOOD_UNDERSTANDING = 3 ## Level 3 if it is an area where students have a good understanding of the topic.
 
 def cs19_understanding():
-    target_levels = []    
+    target_levels = { d : {} for d in DataKind}
     target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.OTHER_STUDENTS] = MIXED_UNDERSTANDING
     target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.COURSE_INSTRUCTOR] = GOOD_UNDERSTANDING
     target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.COURSE_TAS] = GOOD_UNDERSTANDING
