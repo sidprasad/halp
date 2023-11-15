@@ -71,6 +71,16 @@
                 var resp = document.getElementById('checkedAnswer');
                 resp.textContent = "...responding...";
 
+
+
+                // If level 3, perhaps lets not check answer.
+
+                if (document.getElementById('dqlevel').value == 3) {
+                    resp.textContent =  document.getElementById('dqgenansw').value;
+                    // Do we reset here?
+                    return;
+                }
+
                 makePostRequest('/dialogic/check', payload)
                     .then(responseJSON => 
                     {
@@ -104,12 +114,19 @@
 
                 // The element is collapsed and will expand
                 dq.textContent = "Generating question";
-                            // Get question is NOT being called, or we are not waiting enough?
+
                 getQuestion(policy_url ="{{ policy_url }}" )
                 .then(responseJSON => 
                 {
                     var q = responseJSON['Question'];
                     dq.textContent = q;
+
+                    var dqlevel = document.getElementById('dqlevel');
+                    var dqgenansw = document.getElementById('dqgenansw');
+
+                    dqlevel.value = responseJSON['Level'];
+                    dqgenansw.value = responseJSON['Answer'];
+
                 });
             }
         }
@@ -175,13 +192,19 @@
                                 <div class="col-md-6">
                                     <div class="panel panel-primary">
                                         <p id="dq">... </p>
+                                        
                                         <input id="btn-input-ans" type="text" class="form-control input-sm" placeholder="Type your answer here..." />
+
+                                        <input type="hidden" id="dqlevel" name="dqlevel" value="">
+                                        <input type="hidden" id="dqgenansw" name="dqgenansw" value="">
+
                                         <span class="input-group-btn">
                                             <button class="btn btn-warning btn-sm" id="btn-ans" onclick="sendAnswer()">
                                                 Submit
                                             </button>
                                         </span>
                                         <p id="checkedAnswer"> </p>
+
                                     </div>
                                 </div>
                             </div>

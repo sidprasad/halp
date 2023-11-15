@@ -41,7 +41,11 @@ def questiongen():
 
     data = request.get_json()
     policy_url = data.get('policy_url')
-    q = dq.gen_question(policy_url = policy_url)    
+    q = dq.gen_question(policy_url = policy_url)
+
+
+    ## Q has question, level, answer
+
     return q
 
 

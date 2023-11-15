@@ -13,17 +13,19 @@ from questionutils import *
 class QuestionGenerator:
     def gen_question(self, policy_url):
         system_prompt = self.get_system_prompt(policy_url=policy_url)
-        user_prompt = self.get_user_prompt()
-        raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
-        ## Re-engineer to return question level, and potential answer.
-        return try_parse_json_question(raw_str)
+        user_prompt_data = self.get_user_prompt()
+        user_prompt = user_prompt_data['prompt']
 
+        raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
+        
+        ## Re-engineer to return question level, and potential answer.
+        q = try_parse_json_question(raw_str)
+        q['level'] = user_prompt_data['level']
+        return q
         
     def get_relation_string(self, data_kind, data_processor):
         return "[QUESTION] should focus on {dk} and how/if it is shared with {dp}.".format(dp = data_processor, dk = data_kind)
 
-
-    # Will abstract out to various connectors
     def get_system_prompt(self, policy_url):
 
         plaintext_policy = get_policy_from_web(policy_url)
@@ -44,8 +46,7 @@ class QuestionGenerator:
 
         '''.format(p = plaintext_policy)
         return PLAINTEXT_SYSTEM_PROMPT
-
-    # TODO: Improve        
+      
     def get_user_prompt(self):
 
         (data_kind, data_processor) = get_random_topic()
@@ -55,4 +56,8 @@ class QuestionGenerator:
 
         # Generate prompt
         p = "Employing the Socratic method, ask a student a [QUESTION] about the [PRIVACY POLICY]" + rel_prompt + level_prompt
-        return p
+
+
+
+
+        return { 'prompt' : p, 'level': level }
