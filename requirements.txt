@@ -6,3 +6,6 @@ openai
 nltk
 requests
 bs4
+sentencepiece
+torch
+transformers
