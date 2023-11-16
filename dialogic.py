@@ -4,10 +4,14 @@ from questiongen import QuestionGenerator
 from answercheck import GPTAnswerChecker
 from transformers import pipeline
 
+from sentence_transformers import SentenceTransformer, util
+
+
 class DialogicPrompter:
     qgen = QuestionGenerator()
     gptacheck = GPTAnswerChecker()
     t5_semantic_similarity = pipeline("text2text-generation", model="t5-base", tokenizer="t5-base")
+    semantic_model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 
 
@@ -27,20 +31,19 @@ class DialogicPrompter:
 
         ### TODO: Fix
         ans['Confidence'] = conf_measure
+        return ans
 
     
 
 
-    def get_measurement_of_feedback(self, a1, a2):
-              
-        # Combine sentences for input to T5
-        input_text = f"check semantic similarity: '{a1}' and '{a2}'"
+    def get_measurement_of_feedback(self, t1, t2):
+        
+        # Embedding for generated and provided answers
+        generated_embedding = self.semantic_model.encode(t1, convert_to_tensor=True)
+        provided_embedding = self.semantic_model.encode(t2, convert_to_tensor=True)
 
-        # Generate output using T5
-        output = self.t5_semantic_similarity(input_text, max_length=50, num_beams=4, length_penalty=2.0, early_stopping=True)
+        # Calculate cosine similarity
+        cosine_similarity = util.pytorch_cos_sim(generated_embedding, provided_embedding)
 
-        ## Now we should be able to examine the output. If both answers are semantically similar, we may be more confident in the answer.
-
-        # Extract the generated output
-        generated_text = output[0]['generated_text']
-
+        # Check if the answers are similar
+        return cosine_similarity.item()
