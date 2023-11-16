@@ -23,10 +23,8 @@ class GPTAnswerChecker:
             For this policy, the student was asked a [QUESTION] and responded with an [ANSWER]. 
             Determine whether [ANSWER] answers [QUESTION], whether it was correct or incorrect.
             {{
-                "Relevant" : [true if [ANSWER] answers [QUESTION], false otherwise],
                 "Correct" : [true if the answer is correct, false if incorrect],
-                "Explanation" : [A 2 sentence explanation of why the answer was correct or incorrect],
-                "Confidence" : [Your confidence in this decision on a scale of 0 to 1, with 0 being not confident and 1 being completely certain.]
+                "Explanation" : [A 2 sentence answer to [QUESTION]]
             }}
 
         '''.format(p = plaintext_policy)

@@ -122,7 +122,7 @@ def try_parse_json_question(json_string):
     except Exception as e:
         print(json_string)
         print(e)
-        return {'Question' : "Something went wrong", 'Confidence' : 0}
+        return {'Question' : "Something went wrong" }
 
 
 def try_parse_json_answercheck(json_string):
@@ -132,10 +132,8 @@ def try_parse_json_answercheck(json_string):
         print(json_string)
         print(e)
         return {
-                'Relevant' : False,
                 'Correct' : False,
                 'Explanation' : "Something went wrong",
-                'Confidence' : 0
             }
     
 
