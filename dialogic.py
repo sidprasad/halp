@@ -10,7 +10,6 @@ from sentence_transformers import SentenceTransformer, util
 class DialogicPrompter:
     qgen = QuestionGenerator()
     gptacheck = GPTAnswerChecker()
-    t5_semantic_similarity = pipeline("text2text-generation", model="t5-base", tokenizer="t5-base")
     semantic_model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 
@@ -19,17 +18,9 @@ class DialogicPrompter:
         return self.qgen.gen_question(policy_url = policy_url)
     
     def check_answer(self, policy_url, question, answer, candidate_answer):
-        
-        #t5a = T5AnswerChecker().check_answer(question = question, policy_url = policy_url, student_answer = answer)
-
-
-
-        ### Get the 
-        
+               
         ans = self.gptacheck.check_answer(policy_url = policy_url, question = question, answer = answer)
         conf_measure = self.get_measurement_of_feedback(candidate_answer, ans['Explanation'])
-
-        ### TODO: Fix
         ans['Confidence'] = conf_measure
         return ans
 

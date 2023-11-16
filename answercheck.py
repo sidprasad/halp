@@ -16,12 +16,15 @@ class GPTAnswerChecker:
 
         plaintext_policy = get_policy_from_web(policy_url)
 
-        PLAINTEXT_SYSTEM_PROMPT = ''' You are a tutor helping determine whether users correctly understand the privacy policy below:
+        PLAINTEXT_SYSTEM_PROMPT = '''You are dealing with the [PRIVACY POLICY] below:
             [PRIVACY POLICY]
             {p}
 
-            For this policy, the student was asked a [QUESTION] and responded with an [ANSWER]. 
-            Determine whether [ANSWER] answers [QUESTION], whether it was correct or incorrect.
+            I was asked a [QUESTION] about [PRIVACY POLICY] and responded with an [ANSWER]. 
+            Is [ANSWER] a correct answer to [QUESTION]?
+
+
+            Format your response as follows:
             {{
                 "Correct" : [true if the answer is correct, false if incorrect],
                 "Explanation" : [A 2 sentence answer to [QUESTION]]
