@@ -47,6 +47,11 @@ pip install -r requirements.txt
 
 ## Future Work
 
-[] Would like to integrate with information flow analysis.
-[] Evaluation Criteria?
+Please add feature requests as issues, or feel free to open a Pull Request.
+
+- [] Would like to integrate with information flow analysis.
+- [] Evaluation Criteria?
+- [] Need better UI
+- [] Need to be better about question generation, potentially imposing syntactic structure on questions.
+
 
