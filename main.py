@@ -17,13 +17,6 @@ def home():
     return render_template('index.html')
         
 
-@app.route('/explorer')
-def exploremode():
-    policy_html = get_policy_from_web_html("https://www.gradescope.com/privacy")
-    return render_template('explorer.html', policy_html = policy_html, policy_ulorl = "https://www.gradescope.com/privacy")
-
-
-
 @app.route('/answer', methods=['POST'])
 def assistantanswer():
     ast = Assistant()
@@ -56,7 +49,8 @@ def answercheck():
     policy_url = data.get('policy_url')
     question = data.get('question')
     answer = data.get('answer')
-    v = dq.check_answer(policy_url = policy_url, question = question, answer = answer)    
+    candidate_answer = data.get('candidate_answer')
+    v = dq.check_answer(policy_url = policy_url, question = question, answer=answer, candidate_answer = candidate_answer)    
     return v
 
 if __name__ == '__main__':

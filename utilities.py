@@ -14,17 +14,6 @@ nltk.download('stopwords')
 def rough_num_words(s):
     return s.count(" ") + 1
 
-# Retrieves hardcoded policy
-def get_hardcoded_policy():
-    return '''Gradescope collects the following types of data and shares them with the corresponding entities:
-- Personal information: This may include names, email addresses, and other identifying details provided by users. It is shared with Gradescope's internal team, employees, and authorized service providers who need access to the information to perform their duties and improve the service. For example, the internal team may use personal information to verify user identities, provide customer support, and communicate important updates. Authorized service providers may include hosting providers, data storage providers, and analytics platforms who assist Gradescope in delivering and improving the service.
-- Usage data: This includes information about how users interact with the platform, such as the courses they enroll in, assignments they submit, and grades they receive. It is shared with Gradescope's internal team, employees, and authorized service providers who analyze the data to enhance the platform's features and functionality. This analysis helps Gradescope understand user preferences, identify areas for improvement, and make data-driven decisions to provide a better user experience. The internal team may also use usage data to monitor system performance, troubleshoot issues, and ensure the proper functioning of the platform.
-
-Gradescope takes appropriate measures to safeguard the collected data and respects user privacy in accordance with its privacy policy. These measures include implementing technical and organizational security measures to protect against unauthorized access, maintaining strict data confidentiality obligations for employees and service providers, and regularly monitoring and updating security practices to align with industry standards. It is important for users to review and understand the privacy policy to be aware of their rights and choices regarding their data.
-Gradescope does not sell or share personal information with third parties for marketing purposes. The collected data is used solely for the purposes stated in the privacy policy and to provide and improve the Gradescope service. Users can trust that their data is handled with care and in compliance with applicable laws and regulations.'''
-
-
-
 
 
 # VERY BASIC, from https://www.geeksforgeeks.org/python-text-summarizer/
@@ -77,7 +66,7 @@ def summarizer(text):
 
 
         
-def get_policy_from_web(url):
+def get_policy_from_web(url, summarize_if_needed = True):
     text_with_html = get_policy_from_web_html(url)
     soup = BeautifulSoup(text_with_html, 'html.parser')
     plaintext_policy = soup.get_text()
@@ -85,7 +74,7 @@ def get_policy_from_web(url):
 
     # This is a hack I need to figure out!!
     c = 0
-    while rough_num_words(plaintext_policy) > 3000 and c < 3:
+    while summarize_if_needed and rough_num_words(plaintext_policy) > 3000 and c < 3:
         c += 1
         plaintext_policy = summarizer(plaintext_policy)
 
@@ -122,7 +111,7 @@ def try_parse_json_question(json_string):
     except Exception as e:
         print(json_string)
         print(e)
-        return {'Question' : "Something went wrong", 'Confidence' : 0}
+        return {'Question' : "Something went wrong" }
 
 
 def try_parse_json_answercheck(json_string):
@@ -132,10 +121,8 @@ def try_parse_json_answercheck(json_string):
         print(json_string)
         print(e)
         return {
-                'Relevant' : False,
                 'Correct' : False,
-                'Explanation' : "Something went wrong",
-                'Confidence' : 0
+                'AltAnswer' : "Something went wrong",
             }
     
 

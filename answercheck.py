@@ -2,7 +2,7 @@ import gptinterface
 from utilities import *
 
 
-class AnswerChecker:
+class GPTAnswerChecker:
 
 
     def check_answer(self, question, answer, policy_url):
@@ -16,30 +16,25 @@ class AnswerChecker:
 
         plaintext_policy = get_policy_from_web(policy_url)
 
-        PLAINTEXT_SYSTEM_PROMPT = ''' You are a tutor helping determine whether users correctly understand the privacy policy below:
+        PLAINTEXT_SYSTEM_PROMPT = '''You are dealing with the [PRIVACY POLICY] below:
             [PRIVACY POLICY]
             {p}
 
-            For this policy, the student was asked a [QUESTION] and responded with an [ANSWER]. 
-            Determine whether [ANSWER] answers [QUESTION], whether it was correct or incorrect.
-            {{
-                "Relevant" : [true if [ANSWER] answers [QUESTION], false otherwise],
-                "Correct" : [true if the answer is correct, false if incorrect],
-                "Explanation" : [A 2 sentence explanation of why the answer was correct or incorrect],
-                "Confidence" : [Your confidence in this decision on a scale of 0 to 1, with 0 being not confident and 1 being completely certain.]
-            }}
-
+            I was asked a [QUESTION] about [PRIVACY POLICY] and responded with an [ANSWER]. 
+            Is [ANSWER] a correct answer to [QUESTION]?
+            Also answer [QUESTION] with an [ALTERNATIVE ANSWER].
         '''.format(p = plaintext_policy)
         return PLAINTEXT_SYSTEM_PROMPT
 
         
     def get_user_prompt(self, question, answer):
-        return ''' 
-
-            The student was asked the following question:
-            
+        return '''            
             [QUESTION] {q}
-
-            and gave the following answer:
             [ANSWER] {a}
+
+            Format your response as follows:
+            {{
+                "Correct" : [true if [ANSWER] is correct, false if incorrect],
+                "AltAnswer" : [ALTERNATIVE ANSWER]
+            }}
         '''.format(q = question, a = answer)

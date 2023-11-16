@@ -23,6 +23,7 @@
 
     <script src="{{ url_for('static', filename='utils.js')}}"> </script>
     <script>
+        GEN_AI_DISCLAIMER = "This response was generated using generative AI and may contain mistakes. Consider checking this information for correctness.";
         function sendMessage() {
             var input = document.getElementById('btn-input');
             var message = input.value;
@@ -47,10 +48,12 @@
                 makePostRequest('/answer', payload)
                     .then(responseJSON => 
                     {
-                        responseConf = responseJSON['Confidence'];
-                        var c = getConfidenceColor(responseConf);
-                        resp.style.color = c;
-                        resp.textContent = responseJSON['Answer'];
+                        // responseConf = responseJSON['Confidence'];
+                        // var c = getConfidenceColor(responseConf);
+                        // resp.style.color = c;
+                        resp.textContent = responseJSON['Answer'] + " " + GEN_AI_DISCLAIMER;
+
+                        resp.appendChild
                     });
             }
         }
@@ -61,40 +64,38 @@
             if (message.trim() !== '') {
 
                 var question = document.getElementById('dq').textContent;
-                
+                var candidate_ans = document.getElementById('dqgenansw').value;
+                var conf_val = document.getElementById('confidence');
                 payload = {
                     'question' : question,
                     'answer' : message,
+                    'candidate_answer' : candidate_ans,
                     'policy_url' : "{{ policy_url }}"
 
                 }
                 var resp = document.getElementById('checkedAnswer');
                 resp.textContent = "...responding...";
+                conf_val.textContent = "";
 
-
-
-                // If level 3, perhaps lets not check answer.
-
-                if (document.getElementById('dqlevel').value == 3) {
-                    resp.textContent =  document.getElementById('dqgenansw').value;
-                    // Do we reset here?
-                    return;
-                }
 
                 makePostRequest('/dialogic/check', payload)
                     .then(responseJSON => 
                     {
-                        // if (notresponseJSON['Relevant'] ) {
-                        //     resp.textContent = "We could not determine if this was a relevant answer to the question.";
-
-                        // } else {
-                            resp.textContent = responseJSON["Correct"]  ? "Good job! " : "This answer may not be correct. " ;
-                        //}
-
-                        responseConf = responseJSON['Confidence'];
-                        var c = getConfidenceColor(responseConf);
-                        resp.style.color = c;
-                        resp.textContent += responseJSON['Explanation'];
+                        // We may want to do something with level 3 questions,
+                        // to encourage dialogue vs checking correctness.
+                        var lvl = document.getElementById('dqlevel').value;
+                        
+                        if (lvl == 3) {
+                            resp.textContent = "THis question may not have a definite answer, and was designed to drive discussion and thinking."
+                        }
+                        else {
+                            resp.textContent = "";
+                            responseJSON["Correct"]  ? "Good job! " : "This answer may not be correct. " ;
+                            resp.style.color = responseJSON["Correct"] ? "green" : "red";
+                        } 
+                        responseConf = (responseJSON['Confidence'] * 100).toFixed(0) + '%';
+                        conf_val.textContent = "We are " + responseConf +" sure this evaluation is correct. " + GEN_AI_DISCLAIMER;
+                        resp.textContent += responseJSON['AltAnswer'];
                     });
             }
         }
@@ -107,8 +108,10 @@
             var element = document.getElementById('collapseExample2');
             var isExpanded = element.getAttribute('aria-expanded') === 'true';
             if (isExpanded) {
+                // Reset contents
                 dq.textContent = "..."
                 document.getElementById('checkedAnswer').textContent = "";
+                document.getElementById('btn-input-ans').textContent = "";
             } 
             else {
 
@@ -204,7 +207,7 @@
                                             </button>
                                         </span>
                                         <p id="checkedAnswer"> </p>
-
+                                        <small><small> <p id="confidence" class="text-muted"> </p> </small> </small>
                                     </div>
                                 </div>
                             </div>
