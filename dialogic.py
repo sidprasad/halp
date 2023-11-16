@@ -12,15 +12,17 @@ class DialogicPrompter:
     gptacheck = GPTAnswerChecker()
     semantic_model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-
-
     def gen_question(self, policy_url):
         return self.qgen.gen_question(policy_url = policy_url)
     
     def check_answer(self, policy_url, question, answer, candidate_answer):
                
+        
+
         ans = self.gptacheck.check_answer(policy_url = policy_url, question = question, answer = answer)
-        conf_measure = self.get_measurement_of_feedback(candidate_answer, ans['Explanation'])
+
+        altans = ans['AltAnswer']
+        conf_measure = self.get_measurement_of_feedback(candidate_answer, altans)
         ans['Confidence'] = conf_measure
         return ans
 

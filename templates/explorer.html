@@ -86,20 +86,16 @@
                         var lvl = document.getElementById('dqlevel').value;
                         
                         if (lvl == 3) {
-                            resp.textContent = "Let's dig into this further. "
+                            resp.textContent = "THis question may not have a definite answer, and was designed to drive discussion and thinking."
                         }
                         else {
                             resp.textContent = "";
                             responseJSON["Correct"]  ? "Good job! " : "This answer may not be correct. " ;
-
                             resp.style.color = responseJSON["Correct"] ? "green" : "red";
-
                         } 
                         responseConf = (responseJSON['Confidence'] * 100).toFixed(0) + '%';
-                    
-                        conf_val.textContent = "We have tried to evaluate this answer and have a confidence of " + responseConf +" it is correct. " + GEN_AI_DISCLAIMER;
-                       
-                        resp.textContent += responseJSON['Explanation'];
+                        conf_val.textContent = "We are " + responseConf +" sure this evaluation is correct. " + GEN_AI_DISCLAIMER;
+                        resp.textContent += responseJSON['AltAnswer'];
                     });
             }
         }
@@ -211,7 +207,7 @@
                                             </button>
                                         </span>
                                         <p id="checkedAnswer"> </p>
-                                        <p id="confidence" class="text-muted"> </p>
+                                        <small><small> <p id="confidence" class="text-muted"> </p> </small> </small>
                                     </div>
                                 </div>
                             </div>

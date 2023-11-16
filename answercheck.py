@@ -22,25 +22,19 @@ class GPTAnswerChecker:
 
             I was asked a [QUESTION] about [PRIVACY POLICY] and responded with an [ANSWER]. 
             Is [ANSWER] a correct answer to [QUESTION]?
-
-
-            Format your response as follows:
-            {{
-                "Correct" : [true if the answer is correct, false if incorrect],
-                "Explanation" : [A 2 sentence answer to [QUESTION]]
-            }}
-
+            Also answer [QUESTION] with an [ALTERNATIVE ANSWER].
         '''.format(p = plaintext_policy)
         return PLAINTEXT_SYSTEM_PROMPT
 
         
     def get_user_prompt(self, question, answer):
-        return ''' 
-
-            The student was asked the following question:
-            
+        return '''            
             [QUESTION] {q}
-
-            and gave the following answer:
             [ANSWER] {a}
+
+            Format your response as follows:
+            {{
+                "Correct" : [true if [ANSWER] is correct, false if incorrect],
+                "AltAnswer" : [ALTERNATIVE ANSWER]
+            }}
         '''.format(q = question, a = answer)

@@ -122,7 +122,7 @@ def try_parse_json_answercheck(json_string):
         print(e)
         return {
                 'Correct' : False,
-                'Explanation' : "Something went wrong",
+                'AltAnswer' : "Something went wrong",
             }
     
 
