@@ -61,10 +61,12 @@
             if (message.trim() !== '') {
 
                 var question = document.getElementById('dq').textContent;
+                var candidate_ans = document.getElementById('dqgenansw').value;
                 
                 payload = {
                     'question' : question,
                     'answer' : message,
+                    'candidate_answer' : candidate_ans,
                     'policy_url' : "{{ policy_url }}"
 
                 }
@@ -76,9 +78,10 @@
                 // If level 3, perhaps lets not check answer.
 
                 if (document.getElementById('dqlevel').value == 3) {
-                    resp.textContent =  document.getElementById('dqgenansw').value;
+                    //resp.textContent =  document.getElementById('dqgenansw').value;
                     // Do we reset here?
-                    return;
+                    alert("LEVEL 3")
+                    //return;
                 }
 
                 makePostRequest('/dialogic/check', payload)

@@ -2,7 +2,7 @@ import gptinterface
 from utilities import *
 
 
-class AnswerChecker:
+class GPTAnswerChecker:
 
 
     def check_answer(self, question, answer, policy_url):

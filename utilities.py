@@ -77,7 +77,7 @@ def summarizer(text):
 
 
         
-def get_policy_from_web(url):
+def get_policy_from_web(url, summarize_if_needed = True):
     text_with_html = get_policy_from_web_html(url)
     soup = BeautifulSoup(text_with_html, 'html.parser')
     plaintext_policy = soup.get_text()
@@ -85,7 +85,7 @@ def get_policy_from_web(url):
 
     # This is a hack I need to figure out!!
     c = 0
-    while rough_num_words(plaintext_policy) > 3000 and c < 3:
+    while summarize_if_needed and rough_num_words(plaintext_policy) > 3000 and c < 3:
         c += 1
         plaintext_policy = summarizer(plaintext_policy)
 

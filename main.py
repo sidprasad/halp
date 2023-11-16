@@ -49,7 +49,8 @@ def answercheck():
     policy_url = data.get('policy_url')
     question = data.get('question')
     answer = data.get('answer')
-    v = dq.check_answer(policy_url = policy_url, question = question, answer = answer)    
+    candidate_answer = data.get('candidate_answer')
+    v = dq.check_answer(policy_url = policy_url, question = question, answer=answer, candidate_answer = candidate_answer)    
     return v
 
 if __name__ == '__main__':
