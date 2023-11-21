@@ -1,7 +1,9 @@
 
 import random
 from enum import Enum
-import numpy as np
+import pandas as pd
+import os
+import csv
 
 
 class DataKind(Enum):
@@ -9,12 +11,6 @@ class DataKind(Enum):
     PERSONAL_INFORMATION = 2
     INTERACTION_DATA = 3
     OTHER = 4
-    
-    def __str__(self):
-        if self == DataKind.OTHER:
-            return "the collection, ownership or sharing of data"
-        return self.name.title().replace("_", " ")
-    
 
 
 class DataProcessor(Enum):
@@ -24,10 +20,30 @@ class DataProcessor(Enum):
     EDUCATION_RESEARCHERS = 4
     THIRD_PARTY_CORPORATIONS = 5
 
-    def __str__(self):
-        if self == DataProcessor.THIRD_PARTY_CORPORATIONS:
-            return "corporations (including the producer of this software)"
-        return self.name.title().replace("_", " ")
+
+# Get the directory path of the current file
+dirpath = os.path.dirname(os.path.abspath(__file__))
+# Specify the file path of the cs19seed file
+seed_path = os.path.join(dirpath, "cs19seed.csv")
+
+
+# Specify the file path of the cs19.csv file
+csv_path = os.path.join(dirpath, "cs19.csv")
+
+# Read the cs19.csv file into a dictionary
+with open(csv_path, "r") as file:
+    reader = csv.DictReader(file)
+    cs19_data = [row for row in reader]
+
+# Print the cs19_data dictionary
+print(cs19_data)
+
+
+
+# Read the cs19seed file into a pandas DataFrame
+seed_weights = pd.read_csv(seed_path, header=0, index_col=0)
+seed_weights = seed_weights.to_dict()
+
 
 
 
@@ -110,3 +126,4 @@ def cs19_understanding():
 
     
     return target_levels
+
