@@ -24,6 +24,12 @@ class DialogicPrompter:
         altans = ans['AltAnswer']
         conf_measure = self.get_measurement_of_feedback(candidate_answer, altans)
         ans['Confidence'] = conf_measure
+
+
+        ## If answer is wrong, update the seed weights
+        # Probably need some degree of Dependency Injection here
+
+
         return ans
 
     
