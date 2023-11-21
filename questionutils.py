@@ -4,15 +4,24 @@ from enum import Enum
 import pandas as pd
 import os
 import csv
-
+import pandas as pd
 
 class DataKind(Enum):
     ASSIGNMENT_SUBMISSIONS = 1
     PERSONAL_INFORMATION = 2
     INTERACTION_DATA = 3
     OTHER = 4
-
-
+    
+    def __str__(self):
+        if self == DataKind.OTHER:
+            return "the collection, ownership or sharing of data"
+        return self.name.title().replace("_", " ")
+    @staticmethod
+    def from_str(s):
+        if s == "the collection, ownership or sharing of data":
+            return DataKind.OTHER
+        return DataKind[s.upper().replace(" ", "_")]
+    
 class DataProcessor(Enum):
     OTHER_STUDENTS = 1
     COURSE_INSTRUCTOR = 2
@@ -20,6 +29,16 @@ class DataProcessor(Enum):
     EDUCATION_RESEARCHERS = 4
     THIRD_PARTY_CORPORATIONS = 5
 
+    def __str__(self):
+        if self == DataProcessor.THIRD_PARTY_CORPORATIONS:
+            return "corporations (including the producer of this software)"
+        return self.name.title().replace("_", " ")
+    
+    @staticmethod
+    def from_str(s):
+        if s == "corporations (including the producer of this software)":
+            return DataProcessor.THIRD_PARTY_CORPORATIONS
+        return DataProcessor[s.upper().replace(" ", "_")]
 
 # Get the directory path of the current file
 dirpath = os.path.dirname(os.path.abspath(__file__))
@@ -27,24 +46,23 @@ dirpath = os.path.dirname(os.path.abspath(__file__))
 seed_path = os.path.join(dirpath, "cs19seed.csv")
 
 
-# Specify the file path of the cs19.csv file
-csv_path = os.path.join(dirpath, "cs19.csv")
+def get_seed_weights(seed_path):
+    
+    seed_weights = { dke : { dpe : random.random(0, 1) for dpe in DataProcessor} for dke in DataKind}
 
-# Read the cs19.csv file into a dictionary
-with open(csv_path, "r") as file:
-    reader = csv.DictReader(file)
-    cs19_data = [row for row in reader]
+    xs = pd.read_csv(seed_path, header=0, index_col=0).to_dict()
 
-# Print the cs19_data dictionary
-print(cs19_data)
+    for dk in xs.keys():
+        for dp in xs[dk].keys():
 
+            dke = DataKind.from_str(dk)
+            dpe = DataProcessor.from_str(dp)
 
+            seed_weights[dke][dpe] = float(xs[dk][dp])
+    return seed_weights
 
-# Read the cs19seed file into a pandas DataFrame
-seed_weights = pd.read_csv(seed_path, header=0, index_col=0)
-seed_weights = seed_weights.to_dict()
-
-
+# Probably want to update seed weights as we go.
+seed_weights = get_seed_weights(seed_path)
 
 
 def get_random_topic():
@@ -79,10 +97,8 @@ def get_costas_level_prompt(level):
 
 def get_level(data_kind, data_processor):
     ## Modelling the assignment submission system for CS19 for now
-    student_understanding = cs19_understanding()
     
-    
-    target_level = student_understanding[data_kind][data_processor]
+    target_level = weight_to_understanding(seed_weights[data_kind][data_processor])
     weights = { GOOD_UNDERSTANDING : 0.1, BAD_UNDERSTANDING : 0.1, MIXED_UNDERSTANDING : 0.1}
     weights[target_level] = 0.8
 
@@ -97,33 +113,11 @@ MIXED_UNDERSTANDING = 2 ## Level 2 if its an area where student understanding is
 GOOD_UNDERSTANDING = 3 ## Level 3 if it is an area where students have a good understanding of the topic.
 
 
-
-## TODO: This should be a ratio of students who got it correct.
-def cs19_understanding():
-    target_levels = { d : {} for d in DataKind}
-    target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.OTHER_STUDENTS] = MIXED_UNDERSTANDING
-    target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.COURSE_INSTRUCTOR] = GOOD_UNDERSTANDING
-    target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.COURSE_TAS] = GOOD_UNDERSTANDING
-    target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.EDUCATION_RESEARCHERS] = BAD_UNDERSTANDING
-    target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.THIRD_PARTY_CORPORATIONS] = BAD_UNDERSTANDING
-    target_levels[DataKind.PERSONAL_INFORMATION][ DataProcessor.OTHER_STUDENTS] = GOOD_UNDERSTANDING ## THis one is complicated
-    target_levels[DataKind.PERSONAL_INFORMATION][ DataProcessor.COURSE_INSTRUCTOR] = GOOD_UNDERSTANDING
-    target_levels[DataKind.PERSONAL_INFORMATION][ DataProcessor.COURSE_TAS] = BAD_UNDERSTANDING
-    target_levels[DataKind.PERSONAL_INFORMATION][ DataProcessor.EDUCATION_RESEARCHERS] = GOOD_UNDERSTANDING
-    target_levels[DataKind.PERSONAL_INFORMATION][ DataProcessor.THIRD_PARTY_CORPORATIONS] = BAD_UNDERSTANDING
-    target_levels[DataKind.INTERACTION_DATA][ DataProcessor.OTHER_STUDENTS] = GOOD_UNDERSTANDING
-    target_levels[DataKind.INTERACTION_DATA][ DataProcessor.COURSE_INSTRUCTOR] = BAD_UNDERSTANDING
-    target_levels[DataKind.INTERACTION_DATA][ DataProcessor.COURSE_TAS] = GOOD_UNDERSTANDING
-    target_levels[DataKind.INTERACTION_DATA][ DataProcessor.EDUCATION_RESEARCHERS] = GOOD_UNDERSTANDING
-    target_levels[DataKind.INTERACTION_DATA][ DataProcessor.THIRD_PARTY_CORPORATIONS] = MIXED_UNDERSTANDING
-
-    ## These are not well defined, to add some interestingness to the questions.
-    target_levels[DataKind.OTHER][ DataProcessor.OTHER_STUDENTS] = random.randint(1,3)
-    target_levels[DataKind.OTHER][ DataProcessor.COURSE_INSTRUCTOR] = random.randint(1,3)
-    target_levels[DataKind.OTHER][ DataProcessor.COURSE_TAS] = random.randint(1,3)
-    target_levels[DataKind.OTHER][ DataProcessor.EDUCATION_RESEARCHERS] = random.randint(1,3)
-    target_levels[DataKind.OTHER][ DataProcessor.THIRD_PARTY_CORPORATIONS] = random.randint(1,3)
-
-    
-    return target_levels
+def weight_to_understanding(x):
+    if x < 0.33:
+        return BAD_UNDERSTANDING
+    elif x >= 0.33 and x <= 0.66:
+        return MIXED_UNDERSTANDING
+    else:
+        return GOOD_UNDERSTANDING
 
