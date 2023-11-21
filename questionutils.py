@@ -1,6 +1,7 @@
 
 import random
 from enum import Enum
+import numpy as np
 
 
 class DataKind(Enum):
@@ -79,6 +80,9 @@ BAD_UNDERSTANDING = 1 ## Level 1 if its an area where students do not know what 
 MIXED_UNDERSTANDING = 2 ## Level 2 if its an area where student understanding is mixed, or the scenario is a little complicated.
 GOOD_UNDERSTANDING = 3 ## Level 3 if it is an area where students have a good understanding of the topic.
 
+
+
+## TODO: This should be a ratio of students who got it correct.
 def cs19_understanding():
     target_levels = { d : {} for d in DataKind}
     target_levels[DataKind.ASSIGNMENT_SUBMISSIONS][ DataProcessor.OTHER_STUDENTS] = MIXED_UNDERSTANDING
