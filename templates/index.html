@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,18 +8,25 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
         <!-- Bootstrap JS -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <style>
+            .bauhaus-font {
+                font-family: "Bauhaus 93", cursive;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
-            <h1> Human Answers (to) Learn (about) Privacy </h1>
             <div class="container">
-                    <div class="container">
+                <div class="row media">
+                        <img src="{{ url_for('static', filename='background.png') }}" alt="Background Image that says Human Answers (to) Learn (about) Privacy">
+                    <div class="media-body bauhaus-font">
+                        
                         <h4>Enter a Privacy Policy URL</h4>
                         <form method="POST">
                             <label for="policy_url">Policy URL:</label>
@@ -26,8 +34,10 @@
                             <input type="submit" value="Submit">
                         </form>
                     </div>
+                </div>
             </div>
         </div>
     </body>
 </html>
+
 

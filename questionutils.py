@@ -48,7 +48,7 @@ seed_path = os.path.join(dirpath, "cs19seed.csv")
 
 def get_seed_weights(seed_path):
     
-    seed_weights = { dke : { dpe : random.random(0, 1) for dpe in DataProcessor} for dke in DataKind}
+    seed_weights = { dke : { dpe : random.random() for dpe in DataProcessor} for dke in DataKind}
 
     xs = pd.read_csv(seed_path, header=0, index_col=0).to_dict()
 
