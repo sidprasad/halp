@@ -55,9 +55,5 @@ class QuestionGenerator:
         level_prompt = get_costas_level_prompt(level)
 
         # Generate prompt
-        p = "Employing the Socratic method, ask a student a [QUESTION] about the [PRIVACY POLICY]" + rel_prompt + level_prompt
-
-
-
-
+        p = "Employing the Socratic method, ask a student a [QUESTION] about the [PRIVACY POLICY]. " + rel_prompt + " " + level_prompt
         return { 'prompt' : p, 'level': level }

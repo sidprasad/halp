@@ -122,6 +122,9 @@
                 .then(responseJSON => 
                 {
                     var q = responseJSON['Question'];
+
+                    console.log("Question Level: " + responseJSON['Level'])
+
                     dq.textContent = q;
 
                     var dqlevel = document.getElementById('dqlevel');
