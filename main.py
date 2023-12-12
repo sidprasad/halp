@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from dialogic import DialogicPrompter
 from assistant import Assistant
 from utilities import get_policy_from_web_html
+import csv
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -29,15 +31,14 @@ def assistantanswer():
     return ans
 
 @app.route('/dialogic/gen', methods=['POST'])
+
 def questiongen():
     dq = DialogicPrompter()
 
     data = request.get_json()
     policy_url = data.get('policy_url')
-    q = dq.gen_question(policy_url = policy_url)
+    q = dq.gen_question(policy_url=policy_url)
 
-
-    ## Q has question, level, answer
 
     return q
 

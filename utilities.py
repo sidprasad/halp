@@ -4,11 +4,21 @@ import nltk
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize, sent_tokenize 
 import json
-from enum import Enum
+import nltk
+import re
+#from enum import Enum
 
 
-nltk.download('punkt')
-nltk.download('stopwords')
+
+try:
+    nltk.data.find('punkt')
+except LookupError:
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('stopwords')
+except LookupError:
+    nltk.download('stopwords')
 
 
 def rough_num_words(s):
@@ -97,7 +107,7 @@ def get_policy_from_web_html(url):
 
 def try_parse_json_answer(json_string):
     try:
-        return json.loads(json_string)
+        return load_string(json_string)
     except Exception as e:
         print(json_string)
         print(e)
@@ -107,7 +117,7 @@ def try_parse_json_answer(json_string):
 
 def try_parse_json_question(json_string):
     try:
-        return json.loads(json_string)
+        return load_string(json_string)
     except Exception as e:
         print(json_string)
         print(e)
@@ -116,7 +126,7 @@ def try_parse_json_question(json_string):
 
 def try_parse_json_answercheck(json_string):
     try:
-        return json.loads(json_string)
+        return load_string(json_string)
     except Exception as e:
         print(json_string)
         print(e)
@@ -126,3 +136,10 @@ def try_parse_json_answercheck(json_string):
             }
     
 
+
+def load_string(json_string):
+    # Check if ",}" is present in the json_string
+    if re.search(r',\s*}', json_string):
+        json_string = re.sub(r',\s*}', '}', json_string)
+
+    return json.loads(json_string)

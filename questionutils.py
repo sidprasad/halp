@@ -3,7 +3,6 @@ import random
 from enum import Enum
 import pandas as pd
 import os
-import csv
 import pandas as pd
 
 class DataKind(Enum):
@@ -77,23 +76,23 @@ def get_costas_level_prompt(level):
         return '''
             [QUESTION] should be answerable with yes, no, or specific information found in [POLICY].
             [QUESTION] should encorage students to define, define, describe, identify, list or name.
-            '''
+            [QUESTION] should have an obvious right or wrong answer.
+            [QUESTION] should use one of the following words: {l1_words}'''.format(l1_words = ", ".join(l1_words))
+
     ## Level 2 if its an area where student opinion is mixed. These questions require students to expand what they already know by using facts, details, or clues.
     elif level == 2:
         return '''
             [QUESTION] should require students to expand what they already know by using facts or details in [POLICY].
-            [QUESTION] should encorage students to analyze, compare, contrast, group, infer or sequence.'''
+            [QUESTION] should encorage students to analyze, compare, contrast, group, infer or sequence.
+            Good responses to [QUESTION] should involve applying or analyzing existing knowledge.[QUESTION] should use one of the following words: {l2_words}'''.format(l2_words = ", ".join(l2_words))
     ## Level 3 if it is an area where students have a good understanding of the topic. These questions require students to reflect on their thinking and be able to respond with a
     # personal opinion that is supported by facts. The student makes a value judgment or wonders about something. There is no right or wrong answer.
     elif level == 3:
         return '''
-            [QUESTION] should require students to reflect on their thinking and be able to respond with a personal opinion that is supported by facts in [POLICY]. 
-            [QUESTION] should encorage students to apply a principle, evaluate, hypothesize,imagine, judge, predict or speculate.
-            [QUESTION] should not have an obvious right or wrong answer.
-            '''
+            [QUESTION] should require students to reflect on their thinking and be able to respond with a personal opinion about [POLICY]. 
+            [QUESTION] should encorage students to apply a principle, evaluate, hypothesize, imagine, judge, predict or speculate.
+            [QUESTION] should not have an obvious right or wrong answer. [QUESTION] should use one of the following words: {l3_words}'''.format(l3_words = ", ".join(l3_words))
     return "[QUESTION] should be focused on the privacy policy, and encourage thought about what information is collected, who it is shared with or what it is used for."
-
-
 
 def get_level(data_kind, data_processor):
     ## Modelling the assignment submission system for CS19 for now
@@ -120,4 +119,9 @@ def weight_to_understanding(x):
         return MIXED_UNDERSTANDING
     else:
         return GOOD_UNDERSTANDING
+
+l1_words = ['collect', 'copy', 'define','describe', 'examine', 'find','group', 'identify', 'indicate','label', 'list', 'locate', 'match','name', 'omit', 'observe', 'point','provide', 'quote', 'read', 'recall','recite', 'recognize', 'repeat','reproduce', 'say', 'select', 'sort','spell', 'state', 'tabulate', 'tell','touch', 'underline', 'who','when', 'where', 'what','alter', 'associate','calculate', 'categorize','communicate', 'convert','distinguish', 'expand','explain', 'inform', 'name','alternatives', 'outline','paraphrase', 'rearrange','reconstruct', 'relate','restate','summarize', 'tell the','meaning of', 'translate','understand', 'verbalize','write']
+l2_words = ["acquire", "adopt", "apply","assemble", "capitalize","construct", "consume","demonstrate","develop", "discuss","experiment","formulate","manipulate", "organize","relate", "report", "search","show", "solve novel","problems", "tell","consequences", "try","use", "utilize", "analyze", "arrange","break down","categorize", "classify","compare", "contrast","deduce", "determine","diagram", "differentiate","discuss causes", "dissect","distinguish", "give","reasons", "order","separate", "sequence","survey", "take apart","test for", "why"]
+l3_words = ["appraise", "argue", "assess", "challenge", "choose", "conclude","criticize", "critique", "debate", "decide", "defend", "discriminate","discuss", "document", "draw conclusions", "editorialize", "evaluate","grade", "interpret", "judge", "justify", "prioritize", "rank", "rate","recommend", "reject", "support", "validate", "weigh", "alter", "build","combine", "compose", "construct", "create", "develop", "estimate","form", "generate", "hypothesize", "imagine", "improve", "infer","invent", "modify", "plan", "predict", "produce", "propose", "reorganize","rewrite", "revise", "simplify", "synthesize"]
+
 

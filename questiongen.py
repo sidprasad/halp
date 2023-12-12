@@ -2,25 +2,47 @@ import gptinterface
 from utilities import *
 from questionutils import *
 
-
-
-### TODO:
-# [] provide question level alongside question
-
-
-
-
 class QuestionGenerator:
+
+
+
+
+    def ensure_question_structure(self, q, level):
+
+        q_lower = q.lower()
+        if level == 1:
+            return any([w in q_lower for w in l1_words])
+        elif level == 2:
+            return any([w in q_lower for w in l2_words])
+        elif level == 3:
+            return any([w in q_lower for w in l3_words])
+        else:
+            return True
+
+            
+            
+
+
+
     def gen_question(self, policy_url):
         system_prompt = self.get_system_prompt(policy_url=policy_url)
         user_prompt_data = self.get_user_prompt()
         user_prompt = user_prompt_data['prompt']
 
-        raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
-        
-        ## Re-engineer to return question level, and potential answer.
-        q = try_parse_json_question(raw_str)
-        q['Level'] = user_prompt_data['level']
+        q = None
+        valid_question = False
+        max_iter = 5
+
+        while max_iter > 0 and (not valid_question):
+            max_iter -= 1
+            raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
+            q = try_parse_json_question(raw_str)
+            valid_question = self.ensure_question_structure(q['Question'], user_prompt_data['level'])
+            q['Level'] = user_prompt_data['level']
+
+        if max_iter == 0:
+            q = {'Question' : "Failed Question Gen, please try again.", 'Level' : -1}
+
         return q
         
     def get_relation_string(self, data_kind, data_processor):
