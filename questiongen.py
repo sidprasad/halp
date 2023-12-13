@@ -3,10 +3,6 @@ from utilities import *
 from questionutils import *
 
 class QuestionGenerator:
-
-
-
-
     def ensure_question_structure(self, q, level):
 
         q_lower = q.lower()
@@ -46,9 +42,7 @@ class QuestionGenerator:
 
     def get_system_prompt(self, policy_url):
 
-        plaintext_policy = get_policy_from_web(policy_url)
-
-    
+        plaintext_policy = get_policy_from_web(policy_url)  
         PLAINTEXT_SYSTEM_PROMPT = ''' You are a tutor helping users correctly understand the privacy policy below:
             [PRIVACY POLICY]
             {p}

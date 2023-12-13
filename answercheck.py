@@ -4,18 +4,15 @@ from utilities import *
 
 class GPTAnswerChecker:
 
-
     def check_answer(self, question, answer, policy_url):
         system_prompt = self.get_system_prompt(policy_url=policy_url)
         user_prompt = self.get_user_prompt(question = question, answer = answer)
         raw_str = gptinterface.ask_gpt_chunked(system_prompt=system_prompt, user_prompt= user_prompt)
         return try_parse_json_answercheck(raw_str)
 
-    # Will abstract out to various connectors
+
     def get_system_prompt(self, policy_url):
-
         plaintext_policy = get_policy_from_web(policy_url)
-
         PLAINTEXT_SYSTEM_PROMPT = '''You are dealing with the [PRIVACY POLICY] below:
             [PRIVACY POLICY]
             {p}

@@ -6,9 +6,6 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 import json
 import nltk
 import re
-#from enum import Enum
-
-
 
 try:
     nltk.data.find('punkt')
@@ -20,10 +17,8 @@ try:
 except LookupError:
     nltk.download('stopwords')
 
-
 def rough_num_words(s):
     return s.count(" ") + 1
-
 
 
 # VERY BASIC, from https://www.geeksforgeeks.org/python-text-summarizer/
@@ -72,15 +67,11 @@ def summarizer(text):
             summary += " " + sentence 
     return summary
 
-
-
-
         
 def get_policy_from_web(url, summarize_if_needed = True):
     text_with_html = get_policy_from_web_html(url)
     soup = BeautifulSoup(text_with_html, 'html.parser')
     plaintext_policy = soup.get_text()
-
 
     # This is a hack I need to figure out!!
     c = 0
@@ -93,17 +84,11 @@ def get_policy_from_web(url, summarize_if_needed = True):
     
 def get_policy_from_web_html(url):
     response = requests.get(url)
-
-    # Check if the request was successful
     if response.status_code == 200:
         return response.text
-        # Parse the HTML content of the page using BeautifulSoup
-
     else:
         print("Failed to retrieve the webpage. Status code:", response.status_code)
         return ""
-    
-
 
 def try_parse_json_answer(json_string):
     try:
@@ -112,8 +97,6 @@ def try_parse_json_answer(json_string):
         print(json_string)
         print(e)
         return {'Answer' : "Something went wrong", 'Confidence' : 0}
-
-
 
 def try_parse_json_question(json_string):
     try:
@@ -134,12 +117,9 @@ def try_parse_json_answercheck(json_string):
                 'Correct' : False,
                 'AltAnswer' : "Something went wrong",
             }
-    
-
 
 def load_string(json_string):
     # Check if ",}" is present in the json_string
     if re.search(r',\s*}', json_string):
         json_string = re.sub(r',\s*}', '}', json_string)
-
     return json.loads(json_string)
