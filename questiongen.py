@@ -19,10 +19,6 @@ class QuestionGenerator:
         else:
             return True
 
-            
-            
-
-
 
     def gen_question(self, policy_url):
         system_prompt = self.get_system_prompt(policy_url=policy_url)
